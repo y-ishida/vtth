@@ -96,21 +96,34 @@ public abstract class Vtth.AbstractTestCase {
 		get { return !(this is INotFail); }
 	}
 
-	private void print_state(bool expr) {
-		const string ok =
-			"\033[32;1m" /* green bold */ +
-			" OK" +
-			"\033[0m" /* clear attribute */;
+	[CCode(cheader_filename = "unistd.h", cname = "isatty")]
+	private static extern bool isatty(int fd);
 
-		const string ng =
-			"\033[31;1m" /* red bold */ +
-			" NG" +
-			"\033[0m" /* clear attribute */;
+	private bool is_redirected {
+		get {
+			return !isatty(stdout.fileno());
+		}
+	}
 
-		if(expr)
-			stdout.puts(ok);
+	private string attr_bold_green(string str) {
+		if(is_redirected)
+			return str;
 		else
-			stdout.puts(ng);
+			return "\033[32;1m" + str + "\033[0m";
+	}
+
+	private string attr_bold_red(string str) {
+		if(is_redirected)
+			return str;
+		else
+			return "\033[31;1m" + str + "\033[0m";
+	}
+
+	private string attr_bold(string str) {
+		if(is_redirected)
+			return str;
+		else
+			return "\033[1m" + str + "\033[0m";
 	}
 
 	[Diagnostics]
@@ -121,7 +134,12 @@ public abstract class Vtth.AbstractTestCase {
 				format = "(non message assertion)";
 
 			stdout.vprintf(format, va_list());
-			print_state(expr);
+
+			if(expr)
+				stdout.puts(attr_bold_green(" OK"));
+			else
+				stdout.puts(attr_bold_red(" NG"));
+
 			stdout.putc('\n');
 		}
 
@@ -153,10 +171,7 @@ public abstract class Vtth.AbstractTestCase {
 
 	~AbstractTestCase() {
 		if(!Test.quiet()) {
-			stdout.printf(
-					"\033[1m" +
-					"[REPORT] OK:%d, NG:%d, Total:%d\n" +
-					"\033[0m",
+			stdout.printf(attr_bold("[REPORT] OK:%d, NG:%d, Total:%d\n"),
 					ok_count, ng_count, ok_count + ng_count);
 		}
 	}
