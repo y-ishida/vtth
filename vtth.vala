@@ -80,11 +80,21 @@
  *
  */
 
-public abstract class AbstractUnitTest {
-	private uint count = 0;
-	private bool first_print = true;
+public interface Vtth.INotAbort {}
 
-	protected bool abort_assertion_failed = true;
+public interface Vtth.INotFail {}
+
+public abstract class Vtth.AbstractTestCase {
+	private int ok_count;
+	private int ng_count;
+
+	private bool abort_assertion_failed {
+		get { return !(this is INotAbort); }
+	}
+
+	private bool fail_assertion_failed {
+		get { return !(this is INotFail); }
+	}
 
 	private void print_state(bool expr) {
 		const string ok =
@@ -105,17 +115,26 @@ public abstract class AbstractUnitTest {
 
 	[Diagnostics]
 	[PrintFormat]
-	protected void assert(bool expr, string format = "non comment assertion", ...) {
+	protected void assert(bool expr, string format = "", ...) {
 		if(!Test.quiet()) {
+			if(format == "")
+				format = "(non message assertion)";
+
 			stdout.vprintf(format, va_list());
 			print_state(expr);
 			stdout.putc('\n');
 		}
 
-		if(!expr && abort_assertion_failed)
-			Process.abort();
+		if(!expr) {
+			ng_count++;
 
-		count++;
+			if(fail_assertion_failed)
+				Test.fail();
+
+			if(abort_assertion_failed)
+				Process.abort();
+		} else
+			ok_count++;
 	}
 
 	[Diagnostics]
@@ -127,14 +146,19 @@ public abstract class AbstractUnitTest {
 		}
 	}
 
-	public AbstractUnitTest() {
-		if(!Test.quiet())
+	public AbstractTestCase() {
+		if(!Test.quiet() && !Test.verbose())
 			stdout.putc('\n');
 	}
 
-	~AbstractUnitTest() {
-		if(!Test.quiet())
-			stdout.printf("Total count of checked assertion: %u - ", count);
+	~AbstractTestCase() {
+		if(!Test.quiet()) {
+			stdout.printf(
+					"\033[1m" +
+					"[REPORT] OK:%d, NG:%d, Total:%d\n" +
+					"\033[0m",
+					ok_count, ng_count, ok_count + ng_count);
+		}
 	}
 }
 
