@@ -22,8 +22,8 @@ class SampleTestCase2 : AbstractTestCase, INotAbort, INotFail {
 	public SampleTestCase2() {
 		assert(true);
 		assert(false);
-		assert(true);
-		assert(false);
+		assert(true, "message of true");
+		assert(false, "message of false");
 	}
 }
 
