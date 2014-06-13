@@ -19,6 +19,7 @@ Features of vtth are as follows:
     total of these is output.
   - Methods and parameters related the test case can be grouped into a class.
 
+![screen shot](screenshot.png)
 
 How to use
 -----------
