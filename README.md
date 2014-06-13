@@ -158,6 +158,7 @@ Type the follow command in vim's command line:
 ```
 (See also the Makefile.)
 
+![vim's quickfix](vim-qfix.gif)
 
 License and copyright
 ----------------------
