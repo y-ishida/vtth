@@ -1,5 +1,5 @@
-Vtth - Vala Tiney Testing Helper
-=================================
+Vtth - Vala tiny testing helper
+================================
 
 Vtth is tiny testing helper for vala.
 
@@ -20,7 +20,7 @@ Vtth can the follows:
 How to use
 -----------
 
-The entire code which used in this description is file 'sample.vala' in this repository.
+The entire code used in this description is file 'sample.vala' in this repository.
 
 ### Building and running a sample
 
@@ -28,6 +28,7 @@ The entire code which used in this description is file 'sample.vala' in this rep
 make
 make check
 ```
+
 
 ### Writhing test cases
 
@@ -75,10 +76,11 @@ The private method `sub\_test` in `SampleTestCase1` is related test of the test 
 As vtth can write test case into one class,
 you can group methods to start up or tear down test case and etc. into same class.
 
+
 ### Not abort when assertion failed
 
 ```vala
-class SampleTestCase2 : AbstractTestCase, INotAbort, INotFail {
+class SampleTestCase2 : AbstractNonStopTestCase {
 	public SampleTestCase2() {
 		assert(true);
 		assert(false);
@@ -89,6 +91,14 @@ class SampleTestCase2 : AbstractTestCase, INotAbort, INotFail {
 }
 ```
 
+If you defined the test case inherited from AbstractNonStopTestCase
+instead of AbstractTestCase, this test case doesn't abort even if assertion failed.
+The program is usually aborted at the line of `assert(false)`.
+However, in this case, the program is not aborted, outputs 'NG' and continues the process.
+
+By the way, the `message` function in this code outputs message
+with the source file name and the line.
+The message of its argument is printf format.
 
 
 ### Adding the test case into the testing framework
@@ -110,14 +120,44 @@ The add_func's argument which should be passed a delegate for testing
 is just doing that new instance of the test case class.
 
 
-### Compiling and running the test
+### Compiling
 
-vtth is not library (package), so copy this file into your project
-and compile with your code to use.
+```
+valac sample.vala vtth.vala
+```
+
+Vtth is not library (package), so copy file 'vtth.vala' into your project
+and compile with your code.
+
+
+### Running the test
+
+The compiled program outputs the result of the test to a stdout.
+
+If a stdout is a tty (terminal screen), the program outputs colored messages.
+However, if a stdout is redirected, these messages have no color,
+in other words, do not output escape sequence.
+
+This feature is useful if you want to work with other programs by using pipe.
+For example, when extracting 'NG' assertions, execute the following command:
+
+```sh
+./sample | grep NG$
+```
+
+In addition, you can use also Quickfix of vim.
+Type the follow command in vim's command line:
+
+```
+:make check
+```
+(See also the Makefile.)
 
 
 License and copyright
 ----------------------
 
-vtth is licensed as follows:
+This program is licensed under the MIT License.
+
+Copyright(c) 2014 Yusuke Ishida.
 
