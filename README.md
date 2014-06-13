@@ -10,12 +10,15 @@ Its output has no color, just put 'OK' or abort the program, it is really boring
 So, I improved it a little bit.
 Vtth uses GLib.Test as usual, namely this is not new testing framework.
 
-Vtth can the follows:
+Features of vtth are as follows:
 
- - Output coloring OK or NG at each assertion.
- - Switch whether to abort or continue the program when assertion failed.
- - Output easy (one line) report which is contained counts of OK, NG and total of these.
- - Group related methods and parameters of a test case into a class.
+  - Colored OK or NG are output at each assertion.
+  - You can select actions at the assertion failed,
+    wheter to abort or continue the program.
+  - The simple (one line) report which contained counts of OK, NG and
+    total of these is output.
+  - Methods and parameters related the test case can be grouped into a class.
+
 
 How to use
 -----------
