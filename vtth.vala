@@ -2,7 +2,7 @@
  * Vtth - Vala tiny testing helper
  * version:0.1
  *
- * http://
+ * https://github.com/y-ishida/vtth
  *
  * The MIT License (MIT)
  *
