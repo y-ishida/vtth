@@ -27,7 +27,7 @@
  * SOFTWARE.
  */
 
-public abstract class Vtth.AbstractTestCase {
+public abstract class Vtth.AbstractTestCaseBase {
 	private int ok_count;
 	private int ng_count;
 
@@ -69,13 +69,8 @@ public abstract class Vtth.AbstractTestCase {
 			return "\033[1m" + str + "\033[0m";
 	}
 
-	private virtual void fail() {
-		Test.fail();
-	}
-
-	private virtual void abort() {
-		Process.abort();
-	}
+	protected abstract void fail();
+	protected abstract void abort();
 
 	[Diagnostics]
 	[PrintFormat]
@@ -111,12 +106,12 @@ public abstract class Vtth.AbstractTestCase {
 		}
 	}
 
-	public AbstractTestCase() {
+	public AbstractTestCaseBase() {
 		if(!Test.quiet() && !Test.verbose())
 			stdout.putc('\n');
 	}
 
-	~AbstractTestCase() {
+	~AbstractTestCaseBase() {
 		if(!Test.quiet()) {
 			stdout.printf(attr_bold("[REPORT] OK:%d, NG:%d, Total:%d\n"),
 					ok_count, ng_count, ok_count + ng_count);
@@ -124,11 +119,21 @@ public abstract class Vtth.AbstractTestCase {
 	}
 }
 
-public abstract class AbstractNonStopTestCase {
-	private virtual void fail() {
+public abstract class Vtth.AbstractTestCase : AbstractTestCaseBase {
+	protected override void fail() {
+		Test.fail();
 	}
 
-	private virtual void abort() {
+	protected override void abort() {
+		Process.abort();
+	}
+}
+
+public abstract class Vtth.AbstractNonStopTestCase : AbstractTestCaseBase {
+	protected override void fail() {
+	}
+
+	protected override void abort() {
 	}
 }
 
