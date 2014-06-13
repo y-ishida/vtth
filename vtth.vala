@@ -80,20 +80,16 @@
  *
  */
 
-public interface Vtth.INotAbort {}
-
-public interface Vtth.INotFail {}
-
 public abstract class Vtth.AbstractTestCase {
 	private int ok_count;
 	private int ng_count;
 
-	private bool abort_assertion_failed {
-		get { return !(this is INotAbort); }
+	private virtual bool abort_assertion_failed {
+		get { return true; }
 	}
 
-	private bool fail_assertion_failed {
-		get { return !(this is INotFail); }
+	private virtual bool fail_assertion_failed {
+		get { return true; }
 	}
 
 	[CCode(cheader_filename = "unistd.h", cname = "isatty")]
@@ -126,6 +122,14 @@ public abstract class Vtth.AbstractTestCase {
 			return "\033[1m" + str + "\033[0m";
 	}
 
+	private virtual void fail() {
+		Test.fail();
+	}
+
+	private virtual void abort() {
+		Process.abort();
+	}
+
 	[Diagnostics]
 	[PrintFormat]
 	protected void assert(bool expr, string format = "", ...) {
@@ -145,12 +149,8 @@ public abstract class Vtth.AbstractTestCase {
 
 		if(!expr) {
 			ng_count++;
-
-			if(fail_assertion_failed)
-				Test.fail();
-
-			if(abort_assertion_failed)
-				Process.abort();
+			fail();
+			abort();
 		} else
 			ok_count++;
 	}
@@ -176,4 +176,13 @@ public abstract class Vtth.AbstractTestCase {
 		}
 	}
 }
+
+public abstract class AbstractNonStopTestCase {
+	private virtual void fail() {
+	}
+
+	private virtual void abort() {
+	}
+}
+
 
