@@ -1,15 +1,12 @@
 
-#valac = /usr/local/bin/valac-0.22
-valac = $(HOME)/vala-0.24.0/bin/valac-0.24
-
-all:
-	$(valac) sample.vala vtth.vala
+sample: sample.vala vtth.vala
+	valac sample.vala vtth.vala
 
 check: sample
 	./sample
 
 clean:
-	rm -f *.[choa] *.vapi
+	rm -f sample
 	rm -rf doc
 
 doc:
