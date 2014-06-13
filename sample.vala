@@ -18,7 +18,7 @@ class SampleTestCase1 : AbstractTestCase {
 	}
 }
 
-class SampleTestCase2 : AbstractTestCase, INotAbort, INotFail {
+class SampleTestCase2 : AbstractNonStopTestCase {
 	public SampleTestCase2() {
 		assert(true);
 		assert(false);
