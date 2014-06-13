@@ -12,6 +12,7 @@ Vtth uses GLib.Test as usual, namely this is not new testing framework.
 
 Features of vtth are as follows:
 
+  - Only requires a file 'vtth.vala'.
   - Colored OK or NG are output at each assertion.
   - You can select actions at the assertion failed,
     wheter to abort or continue the program.
