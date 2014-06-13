@@ -76,7 +76,7 @@ And the third or later arguments are parameters of the second argument.
 Since the character encoding is UTF-8 as vala's default,
 it is able to print multi language strings, of course.
 
-The private method `sub\_test` in `SampleTestCase1` is related test of the test case.
+The private method `sub_test` in `SampleTestCase1` is related test of the test case.
 As vtth can write test case into one class,
 you can group methods to start up or tear down test case and etc. into same class.
 
