@@ -22,6 +22,7 @@ class SampleTestCase2 : AbstractTestCase, INotAbort, INotFail {
 	public SampleTestCase2() {
 		assert(true);
 		assert(false);
+		message("can print message with source code position");
 		assert(true, "message of true");
 		assert(false, "message of false");
 	}
