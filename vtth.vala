@@ -31,14 +31,6 @@ public abstract class Vtth.AbstractTestCaseBase {
 	private int ok_count;
 	private int ng_count;
 
-	private virtual bool abort_assertion_failed {
-		get { return true; }
-	}
-
-	private virtual bool fail_assertion_failed {
-		get { return true; }
-	}
-
 	[CCode(cheader_filename = "unistd.h", cname = "isatty")]
 	private static extern bool isatty(int fd);
 
