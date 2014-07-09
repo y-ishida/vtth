@@ -10,5 +10,5 @@ clean:
 	rm -rf doc
 
 doc:
-	valadoc -o doc vttf.vala
+	valadoc -o doc vtth.vala
 
